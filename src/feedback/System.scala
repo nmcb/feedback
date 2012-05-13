@@ -7,20 +7,23 @@ import graph.Node
  * @since 13/05/12
  */
 
-object System
+object System extends App
 {
-    def main(args : Array[String])
+    val stdout = Console.out
+    val stdin = Console.in
+
+    def test (args : Array[String])
     {
-        val node = new Node("node", null, null)
+        val node = new Node()
         Feedback.ifNotEquals(node, node)
 
-        val otherNode = new Node("node", null, null)
+        val otherNode = new Node()
         Feedback.ifEquals(node, otherNode)
-
-        val nodeWithTheSameUUID = new Node("node", null, null, node.uuid)
-        Feedback.ifNotEquals(node, nodeWithTheSameUUID)
 
         val referenceToNode = node
         Feedback.ifNotEquals(node, referenceToNode)
+
+        val nodeWithTheSameUUID = new Node("node", null, null, node.uuid)
+        Feedback.ifNotEquals(node, nodeWithTheSameUUID)
     }
 }
