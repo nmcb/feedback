@@ -12,7 +12,7 @@ object System extends App
     val stdout = Console.out
     val stdin = Console.in
 
-    def test (args : Array[String])
+    def test ()
     {
         val node = new Node()
         Feedback.ifNotEquals(node, node)
@@ -26,4 +26,6 @@ object System extends App
         val nodeWithTheSameUUID = new Node("node", null, null, node.uuid)
         Feedback.ifNotEquals(node, nodeWithTheSameUUID)
     }
+
+    test()
 }
