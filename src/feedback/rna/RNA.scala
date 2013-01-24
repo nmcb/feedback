@@ -4,81 +4,113 @@ import collection.generic.CanBuildFrom
 import collection.IndexedSeqLike
 import collection.mutable.{Builder, ArrayBuffer}
 
+/**
+ * A ribonucleic acid sequence, e.g. an RNA sequence of nucleotide molecules.
+ */
+final class RNA private(val slots: Array[Int], val length: Int)
+   extends IndexedSeq[Nucleotide] with IndexedSeqLike[Nucleotide, RNA] {
 
-final class RNA private(val groups: Array[Int], val length: Int)
-extends IndexedSeq[Base] with IndexedSeqLike[Base, RNA] {
+   /**
+    * Import companion object definitions .
+    */
 
-   // Import companion object definitions
    import RNA._
 
-   // Mandatory sequencing implementation of ‘apply‘ in ‘IndexedSeq‘
-   def apply(idx: Int): Base = {
-      if (idx < 0 || length <= idx) throw new IndexOutOfBoundsException
-      Base.fromInt(groups(idx / N) >> (idx % N * S) & M)
+   /**
+    * Returns a codon iterator for this RNA sequence. the optional remaining 1 or 2 nucleotides are truncated.
+    * @return A codon iterator for this sequence.
+    */
+   def codons: Iterator[Codon] = for (triplet <- RNA.this.dropRight(length % 3).grouped(3)) yield Codon.fromRNA(triplet)
+
+   /**
+    * Mandatory sequencing implementation of ‘apply‘ in ‘IndexedSeq‘
+    */
+   def apply(index: Int): Nucleotide = {
+      if (index < 0 || length <= index) throw new IndexOutOfBoundsException
+      Nucleotide.fromInt(slots(index / N) >> (index % N * S) & M)
    }
+
+   /**
+    * Mandatory: re-implementation of ‘newBuilder‘ in ‘IndexedSeq‘ delegating to companion object builder factory.
+    **/
+   override protected[this] def newBuilder: Builder[Nucleotide, RNA] = RNA.newBuilder
 
    /**
     * Optional:  re-implementation of foreach, making it more efficient
     * in speed.  We can mitigate against indirection  (necessary for
     * iteration, i.e. in the default implementation)  by utilizing the
     * indexing property of a feedback.rna.RNA sequence since we know the length of
-    * the feedback.rna.RNA sequence and the group size N in terms of feedback.rna.Base symbols.
-    **/
-   override def foreach[U](f: Base => U): Unit = {
+    * the feedback.rna.RNA sequence and the group size N in terms of feedback.rna.Nucleotide symbols.
+    */
+   override def foreach[U](f: Nucleotide => U): Unit = {
       var i = 0
       var b = 0
       while (i < length) {
-         b = if (i % N == 0) {
-            groups(i / N)
-         }
-         else {
-            b >>> S
-         }
-         f(Base.fromInt(b & M))
+         b = if (i % N == 0) slots(i / N) else b >>> S
+         f(Nucleotide.fromInt(b & M))
          i += 1
       }
    }
-
-   /**
-    * Mandatory: re-implementation of ‘newBuilder‘ in ‘IndexedSeq‘ delegating to companion object builder factory.
-    **/
-   override protected[this] def newBuilder: Builder[Base, RNA] = RNA.newBuilder
-
 }
 
 object RNA {
-   // number of bits in a group
+
+   /**
+    * Defines the number of bits in a group
+    */
    private val S = 2
-   // bitmask to isolate a group
+
+   /**
+    * Defines the bitmask to isolate a group
+    */
    private val M = (1 << S) - 1
-   // number of groups in an Int
+
+   /**
+    * Defines the number of groups in an Int
+
+    */
    private val N = 32 / S
 
    /**
-    * Creates a RNA sequence from given scala collection sequence of bases.
-    * @param buf The sequence of bases.
+    * Creates a RNA sequence from given scala collection sequence of nucleotides.
+    * @param nucleotides The sequence of nucleotides.
     * @return The RNA sequence from given sequence.
     */
-   def fromSeq(buf: Seq[Base]): RNA = {
-      val groups = new Array[Int]((buf.length + N - 1) / N)
-
-      for (i <- 0 until buf.length) {
-         groups(i / N) |= Base.toInt(buf(i)) << (i % N * S)
-
-      }
-
-      new RNA(groups, buf.length)
+   def fromSeq(nucleotides: Seq[Nucleotide]): RNA = {
+      val slots = new Array[Int]((nucleotides.length + N - 1) / N)
+      for (i <- 0 until nucleotides.length) slots(i / N) |= Nucleotide.toInt(nucleotides(i)) << (i % N * S)
+      new RNA(slots, nucleotides.length)
    }
 
 
-   def apply(bases: Base*) = fromSeq(bases)
+   /**
+    * Defines the collection constructor.
+    * @param nucleotides An array of nucleotides to create a RNA sequence for.
+    * @return The created RNA sequence.
+    */
+   def apply(nucleotides: Nucleotide*) = fromSeq(nucleotides)
 
-   def newBuilder: Builder[Base, RNA] = new ArrayBuffer mapResult fromSeq
+   /**
+    * Defines the pattern match injection point.
+    * @param rna The RNA sequence to inject.
+    * @return The matched rna sequence.
+    */
+   def unapplySeq(rna: RNA): Option[Seq[Nucleotide]] = Some(rna)
 
-   implicit def canBuildFrom: CanBuildFrom[RNA, Base, RNA] = new CanBuildFrom[RNA, Base, RNA] {
-      def apply(): Builder[Base, RNA] = newBuilder
+   /**
+    * Creates a new RNA sequence builder function.
+    * @return The RNA sequence builder.
+    */
+   def newBuilder: Builder[Nucleotide, RNA] = new ArrayBuffer mapResult fromSeq
 
-      def apply(from: RNA): Builder[Base, RNA] = newBuilder
+   /**
+    * Defines the injection pointcut for the RNA collection type, i.e merged during creation of a scala collection.
+    * @return The collection's creation pointcut.
+    */
+   implicit def canBuildFrom: CanBuildFrom[RNA, Nucleotide, RNA] = new CanBuildFrom[RNA, Nucleotide, RNA] {
+      def apply(): Builder[Nucleotide, RNA] = newBuilder
+
+      def apply(from: RNA): Builder[Nucleotide, RNA] = newBuilder // Used to match the receiver type if not final.
    }
 }
 
