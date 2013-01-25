@@ -46,6 +46,8 @@ case object Glycine extends AminoAcid
 
 object AminoAcid {
 
+
+
    def fromCodon(codon: Codon): Option[AminoAcid] = codon match {
 
       case Codon(G, G, G) => Some(Glycine)
@@ -89,12 +91,12 @@ object AminoAcid {
       case Codon(A, C, C) => Some(Threonine)
 
       case Codon(U, G, G) => Some(Tryptophan)
-      // Codon(U, G, A) encodes the Opal StopCodon
+      // Codon(U, G, A) encodes the Opal stop codon
       case Codon(U, G, U) => Some(Cysteine)
       case Codon(U, G, C) => Some(Cysteine)
 
-      // Codon(U, A, G) encodes the Amber StopCodon
-      // Codon(U, A, A) encodes the Occur StopCodon
+      // Codon(U, A, G) encodes the Amber stop codon
+      // Codon(U, A, A) encodes the Occur stop codon
       case Codon(U, A, U) => Some(Tyrosine)
       case Codon(U, A, C) => Some(Tyrosine)
 

@@ -17,12 +17,6 @@ final class RNA private(val slots: Array[Int], val length: Int)
    import RNA._
 
    /**
-    * Returns a codon iterator for this RNA sequence. the optional remaining 1 or 2 nucleotides are truncated.
-    * @return A codon iterator for this sequence.
-    */
-   def codons: Iterator[Codon] = for (triplet <- RNA.this.dropRight(length % 3).grouped(3)) yield Codon.fromRNA(triplet)
-
-   /**
     * Mandatory sequencing implementation of ‘apply‘ in ‘IndexedSeq‘
     */
    def apply(index: Int): Nucleotide = {
@@ -49,6 +43,21 @@ final class RNA private(val slots: Array[Int], val length: Int)
          b = if (i % N == 0) slots(i / N) else b >>> S
          f(Nucleotide.fromInt(b & M))
          i += 1
+      }
+   }
+
+   /**
+    * Returns a codon iterator for this RNA sequence.  Includes the start codon, may drop 1 or 2 trailing nucleotides.
+    * @return A codon iterator for this sequence.
+    */
+   //   def codons: Iterator[Codon] = for (triplet <- RNA.this.dropRight(length % 3).grouped(3)) yield Codon.fromRNA(triplet)
+   def codons: Iterator[Codon] = {
+      if (containsSlice(Codon.Start.rna)) {
+         val start = indexOfSlice(Codon.Start.rna)
+         for (triple <- drop(start).grouped(Codon.SIZE); if (triple.size == Codon.SIZE)) yield Codon.fromRNA(triple)
+      }
+      else {
+         Iterator.empty
       }
    }
 }
