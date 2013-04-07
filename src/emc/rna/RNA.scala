@@ -33,8 +33,8 @@ final class RNA private(val slots: Array[Int], val length: Int)
     * Optional:  re-implementation of foreach, making it more efficient
     * in speed.  We can mitigate against indirection  (necessary for
     * iteration, i.e. in the default implementation)  by utilizing the
-    * indexing property of a feedback.rna.RNA sequence since we know the length of
-    * the feedback.rna.RNA sequence and the group size N in terms of feedback.rna.Nucleotide symbols.
+    * indexing property of a emc.rna.RNA sequence since we know the length of
+    * the emc.rna.RNA sequence and the group size N in terms of emc.rna.Nucleotide symbols.
     */
    override def foreach[U](f: Nucleotide => U): Unit = {
       var i = 0
@@ -47,19 +47,13 @@ final class RNA private(val slots: Array[Int], val length: Int)
    }
 
    /**
-    * Returns a codon iterator for this RNA sequence.  Includes the start codon, may drop 1 or 2 trailing nucleotides.
+    * Returns a codon iterator for this sequence, may drop 0, 1 or 2 remaining nucleotides.
     * @return A codon iterator for this sequence.
     */
-   //   def codons: Iterator[Codon] = for (triplet <- RNA.this.dropRight(length % 3).grouped(3)) yield Codon.fromRNA(triplet)
-   def codons: Iterator[Codon] = {
-      if (containsSlice(Codon.Start.rna)) {
-         val start = indexOfSlice(Codon.Start.rna)
-         for (triple <- drop(start).grouped(Codon.SIZE); if (triple.size == Codon.SIZE)) yield Codon.fromRNA(triple)
-      }
-      else {
-         Iterator.empty
-      }
-   }
+   def codons(rf: Int): Iterator[Codon] = for {
+      triple <- drop(rf).grouped(Codon.SIZE)
+      if (triple.size == Codon.SIZE)
+   } yield Codon.fromSeq(triple)
 }
 
 object RNA {

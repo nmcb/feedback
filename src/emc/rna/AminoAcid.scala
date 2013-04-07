@@ -46,8 +46,6 @@ case object Glycine extends AminoAcid
 
 object AminoAcid {
 
-
-
    def fromCodon(codon: Codon): Option[AminoAcid] = codon match {
 
       case Codon(G, G, G) => Some(Glycine)
@@ -141,10 +139,9 @@ object AminoAcidTester extends App {
    val rnaSeq  = Seq(C, A, A, G, G, G, C, U, U, U, C, C, C)
 
    def exec() {
-      println(AminoAcid.fromCodon(Codon.fromRNA(rnaRepr)))
-      // println(AminoAcid.fromRNA(rnaSeq))
+      println(AminoAcid.fromCodon(Codon.fromSeq(rnaRepr)))
+      println(AminoAcid.fromCodon(Codon.fromSeq(rnaSeq)))
 
-      // TODO Peptide chain
       // TODO Seq tests + implementation sequence
    }
 
