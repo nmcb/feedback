@@ -1,4 +1,4 @@
-package feedback.rna
+package emc.rna
 
 import collection.generic.CanBuildFrom
 import collection.IndexedSeqLike
@@ -13,7 +13,6 @@ final class RNA private(val slots: Array[Int], val length: Int)
    /**
     * Import companion object definitions .
     */
-
    import RNA._
 
    /**
@@ -59,17 +58,17 @@ final class RNA private(val slots: Array[Int], val length: Int)
 object RNA {
 
    /**
-    * Defines the number of bits in a group
+    * Defines the number of bits in a slot, i.e the number of integer bit's needed to encode one nucleotide.
     */
    private val S = 2
 
    /**
-    * Defines the bitmask to isolate a group
+    * Defines the bitmask to isolate the least significant slot, i.e. cuts of a nucleotide from an RNA sequence.
     */
    private val M = (1 << S) - 1
 
    /**
-    * Defines the number of groups in an Int
+    * Defines the number of slots in an Int, i.e. the number of nucleotides that fit in an Int.
 
     */
    private val N = 32 / S

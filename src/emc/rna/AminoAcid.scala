@@ -1,4 +1,4 @@
-package feedback.rna
+package emc.rna
 
 
 sealed trait AminoAcid
@@ -78,7 +78,7 @@ object AminoAcid {
       case Codon(A, A, U) => Some(Asparagine)
       case Codon(A, A, C) => Some(Asparagine)
 
-      case Codon(A, U, G) => Some(Methionine) // Encodes Methionine, _not_ the StartCodon.
+      case Codon(A, U, G) => Some(Methionine) // From an amino acid pov, AUG encodes Methionine, _not_ the start codon.
       case Codon(A, U, A) => Some(Isoleucine)
       case Codon(A, U, U) => Some(Isoleucine)
       case Codon(A, U, C) => Some(Isoleucine)
@@ -89,12 +89,12 @@ object AminoAcid {
       case Codon(A, C, C) => Some(Threonine)
 
       case Codon(U, G, G) => Some(Tryptophan)
-      // Codon(U, G, A) encodes the Opal stop codon
+      // Codon(U, G, A) encodes the Opal stop codon, catch all None below
       case Codon(U, G, U) => Some(Cysteine)
       case Codon(U, G, C) => Some(Cysteine)
 
-      // Codon(U, A, G) encodes the Amber stop codon
-      // Codon(U, A, A) encodes the Occur stop codon
+      // Codon(U, A, G) encodes the Amber stop codon, catch all None below
+      // Codon(U, A, A) encodes the Occur stop codon, catch all None below
       case Codon(U, A, U) => Some(Tyrosine)
       case Codon(U, A, C) => Some(Tyrosine)
 
@@ -132,19 +132,23 @@ object AminoAcid {
    }
 }
 
-
-object AminoAcidTester extends App {
+object AminoAcidValidation extends App {
 
    val rnaRepr = RNA(C, A, A, G, G, G, C, U, U, U, C, C, C)
    val rnaSeq  = Seq(C, A, A, G, G, G, C, U, U, U, C, C, C)
 
-   def exec() {
-      println(AminoAcid.fromCodon(Codon.fromSeq(rnaRepr)))
-      println(AminoAcid.fromCodon(Codon.fromSeq(rnaSeq)))
+   def apply() {
+      // requires co-variant sequence argument
+      require(Some(Glutamine) == AminoAcid.fromCodon(Codon.fromSeq(rnaSeq)))
+      require(Some(Glutamine) == AminoAcid.fromCodon(Codon.fromSeq(rnaRepr)))
 
-      // TODO Seq tests + implementation sequence
+      // requires to be orthogonal to cfl., i.e the codons corner-cases:
+      require(Some(Methionine) == AminoAcid.fromCodon(Codon.Start))
+      require(None == AminoAcid.fromCodon(Codon.Stop.Amber))
+      require(None == AminoAcid.fromCodon(Codon.Stop.Occur))
+      require(None == AminoAcid.fromCodon(Codon.Stop.Opal))
    }
 
-   exec()
+   apply()
 }
 

@@ -1,4 +1,4 @@
-package feedback.rna
+package emc.rna
 
 import collection.mutable.ListBuffer
 
@@ -8,8 +8,8 @@ object Ribosome {
 
    /**
     * Decodes an RNA sequence into a reading frame dependent sequences of peptide bounded amino acid molecules.
-    * @param rna
-    * @return
+    * @param rna The RNA sequence.
+    * @return A sequence containing the amino acid molocules encoded by the RNA sequence.
     */
    def decode(rna: RNA)(rf: Int): Seq[PeptideChain] = {
 
@@ -45,7 +45,9 @@ object RibosomeTester extends App {
 
    def exec() {
       val rna = RNA(C, C, C, C, C) ++ Codon.Start.rna ++ RNA(A, U, G, C, C, C) ++ Codon.Stop.Amber.rna ++ RNA(C, C, C) ++ Codon.Stop.Opal.rna ++ Codon.Start.rna ++ RNA(C, A, U, G)
-      val seq = List(List(Methionine, Methionine, Proline), List(Proline), List(Methionine, Histidine))
+      val seq_0 = List(List(Methionine))
+      val seq_1 = List()
+      val seq_2 = List(List(Methionine, Methionine, Proline), List(Proline), List(Methionine, Histidine))
 
       println("RNA.toString ok?            : "
                  + (RNA(C, C, C, C, C, A, U, G, A, U, G, C, C, C, U, A, G, C, C, C, U, A, A, A, U, G, C, A, U, G) == rna)
@@ -85,13 +87,13 @@ object RibosomeTester extends App {
                          Codon(C, A, U)) == rna.codons(2).toList)
                  + " => " + rna.codons(2).toList)
       println("Ribsome.decode(rna)(0) ok?  : "
-                 + (seq != Ribosome.decode(rna)(0))
+                 + (seq_0 == Ribosome.decode(rna)(0))
                  + " => " + Ribosome.decode(rna)(0))
       println("Ribsome.decode(rna)(1) ok?  : "
-                 + (seq != Ribosome.decode(rna)(1))
+                 + (seq_1 == Ribosome.decode(rna)(1))
                  + " => " + Ribosome.decode(rna)(1))
       println("Ribsome.decode(rna)(2) ok?  : "
-                 + (seq == Ribosome.decode(rna)(2))
+                 + (seq_2 == Ribosome.decode(rna)(2))
                  + " => " + Ribosome.decode(rna)(2))
    }
 

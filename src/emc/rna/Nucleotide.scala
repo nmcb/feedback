@@ -1,6 +1,7 @@
-package feedback.rna
+package emc.rna
 
-sealed abstract trait Nucleotide
+
+sealed abstract class Nucleotide
 
 case object G extends Nucleotide
 
