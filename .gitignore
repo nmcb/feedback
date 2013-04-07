@@ -4,3 +4,5 @@ out/
 .idea/
 .svn/
 *.iml
+.DS_Store
+
