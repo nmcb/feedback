@@ -9,7 +9,7 @@ object Ribosome {
    /**
     * Decodes an RNA sequence into a reading frame dependent sequences of peptide bounded amino acid molecules.
     * @param rna The RNA sequence.
-    * @return A sequence containing the amino acid molocules encoded by the RNA sequence.
+    * @return A sequence containing the amino acid molecules encoded by the RNA sequence.
     */
    def decode(rna: RNA)(rf: Int): Seq[PeptideChain] = {
 
