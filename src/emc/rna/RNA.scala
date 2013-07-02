@@ -46,13 +46,13 @@ final class RNA private(val slots: Array[Int], val length: Int)
    }
 
    /**
-    * Returns a codon iterator for this sequence, may drop 0, 1 or 2 remaining nucleotides.
+    * A codon iterator for this sequence starting at given reading frame, will drop {{% SIZE}} remaining nucleotides.
     * @return A codon iterator for this sequence.
     */
    def codons(rf: Int): Iterator[Codon] = for {
-      triple <- drop(rf).grouped(Codon.SIZE)
-      if (triple.size == Codon.SIZE)
-   } yield Codon.fromSeq(triple)
+      group <- drop(rf).grouped(Codon.GROUP_SIZE)
+      if (group.size == Codon.GROUP_SIZE)
+   } yield Codon.fromSeq(group)
 }
 
 object RNA {
@@ -74,7 +74,7 @@ object RNA {
    private val N = 32 / S
 
    /**
-    * Creates a RNA sequence from given scala collection sequence of nucleotides.
+    * Creates an RNA sequence from given scala collection sequence of nucleotides.
     * @param nucleotides The sequence of nucleotides.
     * @return The RNA sequence from given sequence.
     */

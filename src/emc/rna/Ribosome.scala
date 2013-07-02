@@ -7,11 +7,12 @@ object Ribosome {
    type PeptideChain = Seq[AminoAcid]
 
    /**
-    * Decodes an RNA sequence into a reading frame dependent sequences of peptide bounded amino acid molecules.
-    * @param rna The RNA sequence.
+    * Decodes an RNA sequence into a sequences of peptide bounded amino acid molecules.
+    * @param rna The RNA sequence
+    *            @param rf The reading frame
     * @return A sequence containing the amino acid molecules encoded by the RNA sequence.
     */
-   def decode(rna: RNA)(rf: Int): Seq[PeptideChain] = {
+   def decode(rna: RNA, rf: Int = 0): Seq[PeptideChain] = {
 
       var started = false
       var sequence: ListBuffer[PeptideChain] = ListBuffer.empty
@@ -86,15 +87,15 @@ object RibosomeTester extends App {
                          Codon(A, U, G),
                          Codon(C, A, U)) == rna.codons(2).toList)
                  + " => " + rna.codons(2).toList)
-      println("Ribsome.decode(rna)(0) ok?  : "
-                 + (seq_0 == Ribosome.decode(rna)(0))
-                 + " => " + Ribosome.decode(rna)(0))
-      println("Ribsome.decode(rna)(1) ok?  : "
-                 + (seq_1 == Ribosome.decode(rna)(1))
-                 + " => " + Ribosome.decode(rna)(1))
-      println("Ribsome.decode(rna)(2) ok?  : "
-                 + (seq_2 == Ribosome.decode(rna)(2))
-                 + " => " + Ribosome.decode(rna)(2))
+      println("Ribsome.decode(rna) ok?  : "
+                 + (seq_0 == Ribosome.decode(rna))
+                 + " => " + Ribosome.decode(rna))
+      println("Ribsome.decode(rna, 1) ok?  : "
+                 + (seq_1 == Ribosome.decode(rna, 1))
+                 + " => " + Ribosome.decode(rna, 1))
+      println("Ribsome.decode(rna, 2) ok?  : "
+                 + (seq_2 == Ribosome.decode(rna, 2))
+                 + " => " + Ribosome.decode(rna, 2))
    }
 
    exec()

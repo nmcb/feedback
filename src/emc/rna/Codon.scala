@@ -18,9 +18,9 @@ case class Codon(val _1: Nucleotide, val _2: Nucleotide, val _3: Nucleotide) {
 object Codon {
 
    /**
-    * The encoding size of a codon in nucleotides.
+    * The encoding group size of a codon in nucleotides.
     */
-   val SIZE = 3
+   val GROUP_SIZE = 3
 
    /**
     * Defines the start codon.
