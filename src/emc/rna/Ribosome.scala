@@ -87,7 +87,7 @@ object RibosomeTester extends App {
                          Codon(A, U, G),
                          Codon(C, A, U)) == rna.codons(2).toList)
                  + " => " + rna.codons(2).toList)
-      println("Ribsome.decode(rna) ok?  : "
+      println("Ribsome.decode(rna) ok?     : "
                  + (seq_0 == Ribosome.decode(rna))
                  + " => " + Ribosome.decode(rna))
       println("Ribsome.decode(rna, 1) ok?  : "
