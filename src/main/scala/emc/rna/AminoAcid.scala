@@ -89,12 +89,12 @@ object AminoAcid {
       case Codon(A, C, C) => Some(Threonine)
 
       case Codon(U, G, G) => Some(Tryptophan)
-      // Codon(U, G, A) encodes the Opal stop codon, catch all None below
+      // Codon(U, G, A) encodes the Opal stop codon, returns no AminoAcid
       case Codon(U, G, U) => Some(Cysteine)
       case Codon(U, G, C) => Some(Cysteine)
 
-      // Codon(U, A, G) encodes the Amber stop codon, catch all None below
-      // Codon(U, A, A) encodes the Occur stop codon, catch all None below
+      // Codon(U, A, G) encodes the Amber stop codon, returns no AminoAcid
+      // Codon(U, A, A) encodes the Occur stop codon, returns no AminoAcid
       case Codon(U, A, U) => Some(Tyrosine)
       case Codon(U, A, C) => Some(Tyrosine)
 

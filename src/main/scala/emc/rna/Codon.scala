@@ -8,11 +8,11 @@ case class Codon(val _1: Nucleotide, val _2: Nucleotide, val _3: Nucleotide) {
 
    lazy val aminoAcid = AminoAcid.fromCodon(this).get
 
-   def isStartCodon = Codon.Start.equals(this)
+   def isStart = Codon.Start.equals(this)
 
-   def isStopCodon = Codon.StopCodons.contains(this)
+   def isStop = Codon.StopCodons.contains(this)
 
-   def encodesAminoAcid = !isStopCodon
+   def encodesAminoAcid = !isStop
 }
 
 object Codon {
@@ -38,14 +38,14 @@ object Codon {
       def apply(n1: Nucleotide, n2: Nucleotide, n3: Nucleotide): Codon = Codon(n1, n2, n3)
 
       def unapply(codon: Codon): Option[(Nucleotide, Nucleotide, Nucleotide)] = {
-         if (codon.isStopCodon) Some(codon._1, codon._2, codon._3) else None
+         if (codon.isStop) Some((codon._1, codon._2, codon._3)) else None
       }
    }
 
    import Stop._
 
    /**
-    * Convenience definition of the set of stop codons.
+    * Convenience definition for the set of stop codons.
     */
    val StopCodons: Set[Codon] = Set(Amber, Occur, Opal)
 
@@ -91,10 +91,10 @@ object CodonValidation extends App {
       require(Codon.Start match {case Codon.Stop(_, _, _) => false case _ => true})
 
       // business logic
-      require(Codon.Start.isStartCodon)
-      require(Codon.Stop.Amber.isStopCodon)
-      require(Codon.Stop.Occur.isStopCodon)
-      require(Codon.Stop.Opal.isStopCodon)
+      require(Codon.Start.isStart)
+      require(Codon.Stop.Amber.isStop)
+      require(Codon.Stop.Occur.isStop)
+      require(Codon.Stop.Opal.isStop)
 
       require(Codon.Start.encodesAminoAcid)
       require(!Codon.Stop.Amber.encodesAminoAcid)

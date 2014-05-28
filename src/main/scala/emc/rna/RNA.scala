@@ -24,16 +24,17 @@ final class RNA private(val slots: Array[Int], val length: Int)
    }
 
    /**
-    * Mandatory: re-implementation of ‘newBuilder‘ in ‘IndexedSeq‘ delegating to companion object builder factory.
+    * Mandatory: re-implementation of ‘newBuilder‘ in ‘IndexedSeq‘ delegating to
+    * the companion object builder factory.
     **/
    override protected[this] def newBuilder: Builder[Nucleotide, RNA] = RNA.newBuilder
 
    /**
-    * Optional:  re-implementation of foreach, making it more efficient
-    * in speed.  We can mitigate against indirection  (necessary for
-    * iteration, i.e. in the default implementation)  by utilizing the
-    * indexing property of a emc.rna.RNA sequence since we know the length of
-    * the emc.rna.RNA sequence and the group size N in terms of emc.rna.Nucleotide symbols.
+    * Optional:  re-implementation of foreach, making it more efficient in space.
+    * We can mitigate against indirection  (necessary for iteration, i.e. in the
+    * default implementation)  by utilizing the indexing property of an emc.rna.RNA
+    * sequence since we know the length of the sequence and the group size N in
+    * terms of emc.rna.Nucleotide symbols.
     */
    override def foreach[U](f: Nucleotide => U): Unit = {
       var i = 0
@@ -46,7 +47,8 @@ final class RNA private(val slots: Array[Int], val length: Int)
    }
 
    /**
-    * A codon iterator for this sequence starting at given reading frame, will drop {{% SIZE}} remaining nucleotides.
+    * A codon iterator for this sequence starting at given reading frame, will
+    * drop {{% SIZE}} remaining nucleotides.
     * @return A codon iterator for this sequence.
     */
    def codons(rf: Int): Iterator[Codon] = for {
