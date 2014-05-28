@@ -41,6 +41,7 @@ class Value[A](temporary: A) {
 }
 
 object Value {
+   // Note NMCB: Value is a higher-kind, in the same class as scalaz._
    var values = Map[UUID, Value[_]]()
 
    def apply(temporary: String) = {
