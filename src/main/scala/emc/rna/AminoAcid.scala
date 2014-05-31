@@ -134,13 +134,13 @@ object AminoAcid {
 
 object AminoAcidValidation extends App {
 
-   val rnaRepr = RNA(C, A, A, G, G, G, C, U, U, U, C, C, C)
-   val rnaSeq  = Seq(C, A, A, G, G, G, C, U, U, U, C, C, C)
+   val rna = RNA(C, A, A, G, G, G, C, U, U, U, C, C, C)
+   val xs  = Seq(C, A, A, G, G, G, C, U, U, U, C, C, C)
 
    def apply() {
       // requires co-variant sequence argument
-      require(Some(Glutamine) == AminoAcid.fromCodon(Codon.fromSeq(rnaSeq)))
-      require(Some(Glutamine) == AminoAcid.fromCodon(Codon.fromSeq(rnaRepr)))
+      require(Some(Glutamine) == AminoAcid.fromCodon(Codon.fromSeq(xs)))
+      require(Some(Glutamine) == AminoAcid.fromCodon(Codon.fromSeq(rna)))
 
       // requires to be orthogonal to cfl., i.e the codons corner-cases:
       require(Some(Methionine) == AminoAcid.fromCodon(Codon.Start))
