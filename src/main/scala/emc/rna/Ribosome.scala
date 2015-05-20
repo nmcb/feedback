@@ -43,7 +43,6 @@ object Ribosome {
 
 
 object RibosomeTester extends App {
-
   def exec() {
 
     val rna = RNA(C, C, C, C, C) ++
@@ -57,6 +56,8 @@ object RibosomeTester extends App {
     val seq_0 = List(List(Methionine))
     val seq_1 = List()
     val seq_2 = List(List(Methionine, Methionine, Proline), List(Proline), List(Methionine, Histidine))
+
+    println(args.mkString("[", ", ", "]"))
 
     println("RNA.toString ok?            : "
       + (RNA(C, C, C, C, C, A, U, G, A, U, G, C, C, C, U, A, G, C, C, C, U, A, A, A, U, G, C, A, U, G) == rna)

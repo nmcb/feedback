@@ -2,7 +2,7 @@ name := "emc-rna"
 
 version := "1.12.4-SNAPSHOT"
 
-scalaVersion := "2.11.0"
+scalaVersion := "2.11.6"
 
 resolvers ++= Seq(
   "typesafe repository" at "http://repo.typesafe.com/typesafe/releases/"
@@ -19,6 +19,6 @@ scalacOptions ++= Seq(
   "-Xlint",
   "-Ywarn-dead-code",
   "-language:_",
-  "-target:jvm-1.7",
+  "-target:jvm-1.8",
   "-encoding", "UTF-8"
 )

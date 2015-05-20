@@ -11,7 +11,7 @@ final class RNA private(val slots: Array[Int], val length: Int)
    extends IndexedSeq[Nucleotide] with IndexedSeqLike[Nucleotide, RNA] {
 
    /**
-    * Import companion object definitions .
+    * Import companion object attributes.
     */
    import RNA._
 
@@ -108,8 +108,9 @@ object RNA {
    def newBuilder: Builder[Nucleotide, RNA] = new ArrayBuffer mapResult fromSeq
 
    /**
-    * Defines the injection pointcut for the RNA collection type, i.e merged during creation of a scala collection.
-    * @return The collection's creation pointcut.
+    * Defines the advice for a Seq[Nucleotide] to RNA collection type,
+    * i.e injected into creation pointcuts of scala's Seq iff it's inferred element type equals Nucleotide.
+    * @return The collection's creation advice.
     */
    implicit def canBuildFrom: CanBuildFrom[RNA, Nucleotide, RNA] = new CanBuildFrom[RNA, Nucleotide, RNA] {
       def apply(): Builder[Nucleotide, RNA] = newBuilder
