@@ -1,17 +1,14 @@
 package emc.rna
 
 case class Codon(val _1: Nucleotide, val _2: Nucleotide, val _3: Nucleotide) {
-
    val rna      = RNA(_1, _2, _3)
-   val length   = 3
+   val length   = Codon.GROUP_SIZE
    val iterator = rna.iterator
 
    lazy val aminoAcid = AminoAcid.fromCodon(this).get
 
    def isStart = Codon.Start.equals(this)
-
    def isStop = Codon.StopCodons.contains(this)
-
    def encodesAminoAcid = !isStop
 }
 
@@ -28,7 +25,7 @@ object Codon {
    val Start = Codon(A, U, G)
 
    /**
-    * Defines a stop codon extractor for the codons: Amber, Occur and Opal, i.e. UAG, UGA and UAA.
+    * Defines a stop codon extractor i.o.t. pattern match Amber, Occur and Opal, i.e. UAG, UGA and UAA.
     */
    object Stop {
       val Amber = Codon(U, A, G)
