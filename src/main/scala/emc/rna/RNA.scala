@@ -72,7 +72,6 @@ object RNA {
 
   /**
    * Defines the number of slots in an Int, i.e. the number of nucleotides that fit in an Int.
-
    */
   private val N = 32 / S
 
