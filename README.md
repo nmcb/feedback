@@ -27,7 +27,7 @@ Principles of Adult Behavior
 24. Love yourself.
 25. Endure.
 
---John Perry Barlow, 1977
+---John Perry Barlow, 1977
 
 Feedback
 ========
